@@ -1,4 +1,4 @@
-package com.dothat.action;
+package com.sarality.action;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

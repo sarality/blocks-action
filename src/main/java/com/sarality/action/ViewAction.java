@@ -1,6 +1,4 @@
-package com.dothat.action;
-
-import android.view.View;
+package com.sarality.action;
 
 /**
  * Interface for all Actions performed on a View
