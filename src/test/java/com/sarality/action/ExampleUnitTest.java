@@ -1,4 +1,4 @@
-package com.dothat.action;
+package com.sarality.action;
 
 import org.junit.Test;
 

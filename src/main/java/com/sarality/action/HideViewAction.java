@@ -1,4 +1,4 @@
-package com.dothat.action;
+package com.sarality.action;
 
 import android.app.Activity;
 import android.view.View;
