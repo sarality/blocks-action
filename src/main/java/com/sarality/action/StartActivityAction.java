@@ -25,11 +25,12 @@ public class StartActivityAction implements ViewAction {
   }
 
   @Override
-  public void perform() {
+  public boolean perform() {
     Intent intent = new Intent(activity, activityClass);
     if (!showAnimation) {
       intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
     }
     activity.startActivity(intent);
+    return true;
   }
 }
