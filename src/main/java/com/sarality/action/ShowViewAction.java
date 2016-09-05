@@ -31,10 +31,11 @@ public class ShowViewAction implements ViewAction {
   }
 
   @Override
-  public void perform() {
+  public boolean perform() {
     if (startAnimation != null) {
       view.startAnimation(startAnimation);
     }
     view.setVisibility(View.VISIBLE);
+    return true;
   }
 }

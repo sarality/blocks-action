@@ -31,10 +31,11 @@ public class HideViewAction implements ViewAction {
   }
 
   @Override
-  public void perform() {
+  public boolean perform() {
     if (animation != null) {
       view.setAnimation(animation);
     }
     view.setVisibility(View.GONE);
+    return true;
   }
 }
