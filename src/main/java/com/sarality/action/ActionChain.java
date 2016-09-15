@@ -21,11 +21,11 @@ public class ActionChain implements ViewAction {
   }
   
   @Override
-  public boolean perform() {
+  public boolean perform(ActionContext actionContext) {
     boolean success = true;
     for (ViewAction action : actionList) {
       // TODO(abhideep): Add support for onFailure based chaining.
-      success = action.perform();
+      success = action.perform(actionContext);
       if (!success) {
         break;
       }

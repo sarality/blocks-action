@@ -31,7 +31,7 @@ public class HideViewAction implements ViewAction {
   }
 
   @Override
-  public boolean perform() {
+  public boolean perform(ActionContext actionContext) {
     if (animation != null) {
       view.setAnimation(animation);
     }

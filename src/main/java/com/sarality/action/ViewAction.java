@@ -7,5 +7,5 @@ package com.sarality.action;
  */
 public interface ViewAction {
 
-  boolean perform();
+  boolean perform(ActionContext actionContext);
 }

@@ -31,7 +31,7 @@ public class ShowViewAction implements ViewAction {
   }
 
   @Override
-  public boolean perform() {
+  public boolean perform(ActionContext actionContext) {
     if (startAnimation != null) {
       view.startAnimation(startAnimation);
     }

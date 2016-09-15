@@ -69,7 +69,7 @@ public class ClickActions implements ActionInitializer {
 
     @Override
     public void onClick(View view) {
-      action.perform();
+      action.perform(new ActionContext(view));
     }
   }
 }
