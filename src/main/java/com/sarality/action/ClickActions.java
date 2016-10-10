@@ -3,6 +3,8 @@ package com.sarality.action;
 import android.app.Activity;
 import android.view.View;
 
+import com.sarality.util.log.Resources;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +32,7 @@ public class ClickActions implements ActionInitializer {
   public ClickActions register(int viewId, ViewAction action) {
     if (registry.containsKey(viewId)) {
       throw new IllegalStateException("Cannot register multiple actions for the same View with Id  " +
-          activity.getResources().getResourceName(viewId));
+          Resources.name(activity, viewId));
     }
     registry.put(viewId, action);
     return this;
@@ -40,6 +42,9 @@ public class ClickActions implements ActionInitializer {
   public void init() {
     for (Integer viewId : registry.keySet()) {
       View view = activity.findViewById(viewId);
+      if (view == null) {
+        throw new IllegalStateException("Cannot find View with id " + Resources.name(activity, viewId));
+      }
       ViewAction action = registry.get(viewId);
       view.setOnClickListener(new Performer(action));
     }
