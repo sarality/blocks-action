@@ -20,29 +20,35 @@ public class StartActivityAction implements ViewAction {
   private final Class<? extends Activity> activityClass;
   private final List<IntentAppender> intentAppenderList = new ArrayList<>();
 
-  private boolean showAnimation;
+  private NavigationStyleEnum navStyle;
 
   public StartActivityAction(Activity activity, Class<? extends Activity> activityClass,
-      List<IntentAppender> intentAppenderList, boolean showAnimation) {
+      List<IntentAppender> intentAppenderList, NavigationStyleEnum navStyle) {
     this.activity = activity;
     this.activityClass = activityClass;
     if (intentAppenderList != null) {
       this.intentAppenderList.addAll(intentAppenderList);
     }
-    this.showAnimation = showAnimation;
+    this.navStyle = navStyle;
   }
 
   public StartActivityAction(Activity activity, Class<? extends Activity> activityClass,
       IntentAppender... intentAppenders) {
-    this(activity, activityClass, intentAppenders == null? null : Arrays.asList(intentAppenders), false);
+    this(activity, activityClass, intentAppenders == null? null : Arrays.asList(intentAppenders), NavigationStyleEnum.STANDARD);
   }
+
+  public StartActivityAction(Activity activity, Class<? extends Activity> activityClass, NavigationStyleEnum navStyle,
+      IntentAppender... intentAppenders) {
+    this(activity, activityClass, intentAppenders == null? null : Arrays.asList(intentAppenders), navStyle);
+  }
+
 
   @Override
   public boolean perform(ActionContext actionContext) {
     Intent intent = new Intent(activity, activityClass);
-    if (!showAnimation) {
-      intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-    }
+
+    intent.addFlags(navStyle.getIntentFlags());
+
     for (IntentAppender intentAppender : intentAppenderList) {
       intentAppender.append(intent, actionContext);
     }
