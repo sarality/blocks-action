@@ -20,10 +20,10 @@ public class StartActivityAction implements ViewAction {
   private final Class<? extends Activity> activityClass;
   private final List<IntentAppender> intentAppenderList = new ArrayList<>();
 
-  private NavigationStyleEnum navStyle;
+  private NavigationStyle navStyle;
 
   public StartActivityAction(Activity activity, Class<? extends Activity> activityClass,
-      List<IntentAppender> intentAppenderList, NavigationStyleEnum navStyle) {
+      List<IntentAppender> intentAppenderList, NavigationStyle navStyle) {
     this.activity = activity;
     this.activityClass = activityClass;
     if (intentAppenderList != null) {
@@ -34,12 +34,13 @@ public class StartActivityAction implements ViewAction {
 
   public StartActivityAction(Activity activity, Class<? extends Activity> activityClass,
       IntentAppender... intentAppenders) {
-    this(activity, activityClass, intentAppenders == null? null : Arrays.asList(intentAppenders), NavigationStyleEnum.STANDARD);
+    this(activity, activityClass, intentAppenders == null ? null : Arrays.asList(intentAppenders),
+        NavigationStyle.STANDARD);
   }
 
-  public StartActivityAction(Activity activity, Class<? extends Activity> activityClass, NavigationStyleEnum navStyle,
+  public StartActivityAction(Activity activity, Class<? extends Activity> activityClass, NavigationStyle navStyle,
       IntentAppender... intentAppenders) {
-    this(activity, activityClass, intentAppenders == null? null : Arrays.asList(intentAppenders), navStyle);
+    this(activity, activityClass, intentAppenders == null ? null : Arrays.asList(intentAppenders), navStyle);
   }
 
 
@@ -47,7 +48,9 @@ public class StartActivityAction implements ViewAction {
   public boolean perform(ActionContext actionContext) {
     Intent intent = new Intent(activity, activityClass);
 
-    intent.addFlags(navStyle.getIntentFlags());
+    if (navStyle != null) {
+      intent.addFlags(navStyle.getIntentFlags());
+    }
 
     for (IntentAppender intentAppender : intentAppenderList) {
       intentAppender.append(intent, actionContext);

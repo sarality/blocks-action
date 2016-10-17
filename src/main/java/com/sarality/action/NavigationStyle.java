@@ -8,14 +8,14 @@ import android.content.Intent;
  *
  * @author satya@ (Satya Puniani)
  */
-public enum NavigationStyleEnum {
+public enum NavigationStyle {
   STANDARD(0),
   NO_HISTORY(Intent.FLAG_ACTIVITY_NO_HISTORY),
   KEEP_ON_TOP(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
   private final int intentFlags;
 
-  NavigationStyleEnum(int intentFlags){
+  NavigationStyle(int intentFlags){
     this.intentFlags=intentFlags;
   }
 
