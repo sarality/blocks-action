@@ -17,34 +17,31 @@ public class TagValueExtractor<T> implements ViewValueExtractor<T> {
 
   private static final Logger logger = LoggerFactory.getLogger(TagValueExtractor.class.getCanonicalName());
 
-  public static final int DEFAULT_VIEW_ID = -1;
-
   private final Activity activity;
-  private final int viewId;
+  private final ActionViewProvider viewProvider;
   private final int tagResourceId;
 
-  public TagValueExtractor(Activity activity, int viewId, int tagResourceId) {
+  public TagValueExtractor(Activity activity, ActionViewProvider viewProvider, int tagResourceId) {
     this.activity = activity;
-    this.viewId = viewId;
+    this.viewProvider = viewProvider;
     this.tagResourceId = tagResourceId;
   }
 
+  public TagValueExtractor(Activity activity, int viewId, int tagResourceId) {
+    this(activity, new DefaultActionViewProvider(activity, viewId), tagResourceId);
+  }
+
   public TagValueExtractor(Activity activity, int tagResourceId) {
-    this(activity, DEFAULT_VIEW_ID, tagResourceId);
+    this(activity, new DefaultActionViewProvider(activity), tagResourceId);
   }
 
   @Override
   @SuppressWarnings("unchecked")
   public T extract(View view) {
-    View taggedView = view;
-    if (viewId != DEFAULT_VIEW_ID) {
+    View taggedView = viewProvider.getView(view);
+    if (taggedView.getId() > 0) {
       logger.debug("Looking up Tag with Id {} on View with Id {} ", Resources.name(activity, tagResourceId),
-          Resources.name(activity, viewId));
-      taggedView = activity.findViewById(viewId);
-      if (taggedView == null) {
-        throw new IllegalStateException("Could not find View with id "
-            + activity.getResources().getResourceName(viewId));
-      }
+          Resources.name(activity, taggedView.getId()));
     }
     return (T) taggedView.getTag(tagResourceId);
   }
