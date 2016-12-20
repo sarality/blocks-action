@@ -20,6 +20,7 @@ public class StartActivityAction implements ViewAction {
   private final Class<? extends Activity> activityClass;
   private final List<IntentAppender> intentAppenderList = new ArrayList<>();
 
+  private boolean removeSelfFromHistory = false;
   private NavigationStyle navStyle;
 
   public StartActivityAction(Activity activity, Class<? extends Activity> activityClass,
@@ -44,6 +45,21 @@ public class StartActivityAction implements ViewAction {
   }
 
 
+  public StartActivityAction withNavigationStyle(NavigationStyle navigationStyle) {
+    this.navStyle = navigationStyle;
+    return this;
+  }
+
+  public StartActivityAction withIntent(IntentAppender intentAppender) {
+    this.intentAppenderList.add(intentAppender);
+    return this;
+  }
+
+  public StartActivityAction removeSelfFromHistory(boolean removeSelfFromHistory) {
+    this.removeSelfFromHistory = removeSelfFromHistory;
+    return this;
+  }
+
   @Override
   public boolean perform(ActionContext actionContext) {
     Intent intent = new Intent(activity, activityClass);
@@ -56,6 +72,10 @@ public class StartActivityAction implements ViewAction {
       intentAppender.append(intent, actionContext);
     }
     activity.startActivity(intent);
+
+    if (removeSelfFromHistory) {
+      activity.finish();
+    }
     return true;
   }
 }
