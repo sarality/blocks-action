@@ -10,6 +10,14 @@ import android.view.View;
 public class IntentFieldValue<T> implements ViewValueExtractor<T> {
   private T value;
 
+  public IntentFieldValue() {
+    this(null);
+  }
+
+  public IntentFieldValue(T value) {
+    this.value = value;
+  }
+
   public void setValue(T value) {
     this.value = value;
   }
