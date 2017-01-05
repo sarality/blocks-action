@@ -46,7 +46,11 @@ public class ClickActions implements ActionInitializer {
         throw new IllegalStateException("Cannot find View with id " + Resources.name(activity, viewId));
       }
       ViewAction action = registry.get(viewId);
-      view.setOnClickListener(new Performer(action));
+      if (action != null) {
+        view.setOnClickListener(new Performer(action));
+      } else {
+        view.setOnClickListener(null);
+      }
     }
   }
 
@@ -55,7 +59,11 @@ public class ClickActions implements ActionInitializer {
     for (Integer viewId : registry.keySet()) {
       View view = parentView.findViewById(viewId);
       ViewAction action = registry.get(viewId);
-      view.setOnClickListener(new Performer(action));
+      if (action != null) {
+        view.setOnClickListener(new Performer(action));
+      } else {
+        view.setOnClickListener(null);
+      }
     }
   }
 
