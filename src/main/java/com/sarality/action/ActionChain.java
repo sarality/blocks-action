@@ -1,5 +1,7 @@
 package com.sarality.action;
 
+import android.view.View;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,25 +14,37 @@ import java.util.List;
 public class ActionChain implements ViewAction {
 
   private final List<ViewAction> actionList = new ArrayList<>();
+  private final ActionChain failureActionChain;
 
   public ActionChain(ViewAction... actions) {
-    if (actions == null || actions.length < 1) {
+    this((actions == null ? new ArrayList<ViewAction>() : Arrays.asList(actions)));
+  }
+
+  public ActionChain(List<ViewAction> actions, ViewAction... failureActions) {
+    if (actions == null || actions.size() < 1) {
       throw new IllegalArgumentException("Must specify at least the initial action for an action chain");
     }
-    this.actionList.addAll(Arrays.asList(actions));
+    this.actionList.addAll(actions);
+
+    if (failureActions != null && failureActions.length > 0) {
+      this.failureActionChain = new ActionChain(failureActions);
+    } else {
+      this.failureActionChain = null;
+    }
+
   }
-  
+
   @Override
   public boolean perform(ActionContext actionContext) {
     boolean success = true;
     for (ViewAction action : actionList) {
-      // TODO(abhideep): Add support for onFailure based chaining.
       success = action.perform(actionContext);
       if (!success) {
         break;
       }
     }
 
-    return success;
+    return success || failureActionChain != null && failureActionChain.perform(actionContext);
+
   }
 }
