@@ -1,7 +1,5 @@
 package com.sarality.action;
 
-import android.view.View;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +18,7 @@ public class ActionChain implements ViewAction {
     this((actions == null ? new ArrayList<ViewAction>() : Arrays.asList(actions)));
   }
 
+  //TODO(Satya) use builder pattern for failure actions
   public ActionChain(List<ViewAction> actions, ViewAction... failureActions) {
     if (actions == null || actions.size() < 1) {
       throw new IllegalArgumentException("Must specify at least the initial action for an action chain");
@@ -40,11 +39,14 @@ public class ActionChain implements ViewAction {
     for (ViewAction action : actionList) {
       success = action.perform(actionContext);
       if (!success) {
+        if (failureActionChain != null) {
+          return failureActionChain.perform(actionContext);
+        }
         break;
       }
     }
 
-    return success || failureActionChain != null && failureActionChain.perform(actionContext);
+    return success;
 
   }
 }
