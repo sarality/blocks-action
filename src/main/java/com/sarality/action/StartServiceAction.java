@@ -15,13 +15,13 @@ import java.util.List;
  *
  * @author satya@ (Satya Puniani)
  */
-public class StartIntentServiceAction implements ViewAction {
+public class StartServiceAction implements ViewAction {
 
   private final Activity activity;
   private final Class<? extends IntentService> serviceClass;
   private final List<IntentAppender> intentAppenderList = new ArrayList<>();
 
-  public StartIntentServiceAction(Activity activity, Class<? extends IntentService> serviceClass,
+  public StartServiceAction(Activity activity, Class<? extends IntentService> serviceClass,
       List<IntentAppender> intentAppenderList) {
     this.activity = activity;
     this.serviceClass = serviceClass;
@@ -30,12 +30,12 @@ public class StartIntentServiceAction implements ViewAction {
     }
   }
 
-  public StartIntentServiceAction(Activity activity, Class<? extends IntentService> serviceClass,
+  public StartServiceAction(Activity activity, Class<? extends IntentService> serviceClass,
       IntentAppender... intentAppenders) {
     this(activity, serviceClass, intentAppenders == null ? null : Arrays.asList(intentAppenders));
   }
 
-  public StartIntentServiceAction withIntent(IntentAppender intentAppender) {
+  public StartServiceAction withIntent(IntentAppender intentAppender) {
     this.intentAppenderList.add(intentAppender);
     return this;
   }
