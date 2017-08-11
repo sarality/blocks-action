@@ -1,15 +1,11 @@
 package com.sarality.action.intent;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
 
 import com.sarality.action.ActionContext;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Appends a List of serializable values to the intent
