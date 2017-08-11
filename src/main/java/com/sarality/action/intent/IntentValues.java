@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Utility to extract data from an {@link Intent}.
  *
@@ -32,6 +36,15 @@ public class IntentValues {
   public String getString(String parameterName) {
     if (extras != null && extras.containsKey(parameterName)) {
       return extras.getString(parameterName);
+    }
+    return null;
+
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T extends Serializable> ArrayList<T> getSerializableList(String parameterName) {
+    if (extras != null && extras.containsKey(parameterName)) {
+      return (ArrayList<T>) extras.getSerializable(parameterName);
     }
     return null;
 
