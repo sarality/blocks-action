@@ -17,6 +17,7 @@ public class ClickActions implements ActionInitializer {
 
   private Activity activity;
   private Map<Integer, ViewAction> registry = new HashMap<>();
+  private ViewAction parentViewAction;
 
   public ClickActions(Activity activity) {
     this.activity = activity;
@@ -35,6 +36,11 @@ public class ClickActions implements ActionInitializer {
           Resources.name(activity, viewId));
     }
     registry.put(viewId, action);
+    return this;
+  }
+
+  public ClickActions register(ViewAction action) {
+    this.parentViewAction = action;
     return this;
   }
 
@@ -58,12 +64,18 @@ public class ClickActions implements ActionInitializer {
   public void init(View parentView) {
     for (Integer viewId : registry.keySet()) {
       View view = parentView.findViewById(viewId);
+      if (view == null) {
+        throw new IllegalStateException("Cannot find View with id " + Resources.name(activity, viewId));
+      }
       ViewAction action = registry.get(viewId);
       if (action != null) {
         view.setOnClickListener(new Performer(action));
       } else {
         view.setOnClickListener(null);
       }
+    }
+    if (registry.isEmpty() && parentViewAction != null) {
+      parentView.setOnClickListener(new Performer(parentViewAction));
     }
   }
 
