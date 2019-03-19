@@ -9,17 +9,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Registers Click Actions on a View or children of a View.
+ * Registers Long Click Actions on a View or children of a View.
  *
  * @author abhideep@ (Abhideep Singh)
  */
-public class ClickActions implements ActionInitializer {
+public class LongClickActions implements ActionInitializer {
 
   private Activity activity;
   private Map<Integer, ViewAction> registry = new HashMap<>();
   private ViewAction parentViewAction;
 
-  public ClickActions(Activity activity) {
+  public LongClickActions(Activity activity) {
     this.activity = activity;
   }
 
@@ -30,7 +30,7 @@ public class ClickActions implements ActionInitializer {
    * @param action Action to be performed
    * @return Click action with the
    */
-  public ClickActions register(int viewId, ViewAction action) {
+  public LongClickActions register(int viewId, ViewAction action) {
     if (registry.containsKey(viewId)) {
       throw new IllegalStateException("Cannot register multiple actions for the same View with Id  " +
           Resources.name(activity, viewId));
@@ -39,10 +39,11 @@ public class ClickActions implements ActionInitializer {
     return this;
   }
 
-  public ClickActions register(ViewAction action) {
+  public LongClickActions register(ViewAction action) {
     this.parentViewAction = action;
     return this;
   }
+
 
   @Override
   public void init() {
@@ -53,9 +54,9 @@ public class ClickActions implements ActionInitializer {
       }
       ViewAction action = registry.get(viewId);
       if (action != null) {
-        view.setOnClickListener(new Performer(action));
+        view.setOnLongClickListener(new Performer(action));
       } else {
-        view.setOnClickListener(null);
+        view.setOnLongClickListener(null);
       }
     }
   }
@@ -69,13 +70,13 @@ public class ClickActions implements ActionInitializer {
       }
       ViewAction action = registry.get(viewId);
       if (action != null) {
-        view.setOnClickListener(new Performer(action));
+        view.setOnLongClickListener(new Performer(action));
       } else {
-        view.setOnClickListener(null);
+        view.setOnLongClickListener(null);
       }
     }
     if (registry.isEmpty() && parentViewAction != null) {
-      parentView.setOnClickListener(new Performer(parentViewAction));
+      parentView.setOnLongClickListener(new Performer(parentViewAction));
     }
   }
 
@@ -84,17 +85,18 @@ public class ClickActions implements ActionInitializer {
    *
    * @author abhideep@ (Abhideep Singh)
    */
-  private class Performer implements View.OnClickListener {
+  private class Performer implements View.OnLongClickListener {
 
     private final ViewAction action;
 
-    public Performer(ViewAction action) {
+    private Performer(ViewAction action) {
       this.action = action;
     }
 
     @Override
-    public void onClick(View view) {
+    public boolean onLongClick(View view) {
       action.perform(new ActionContext(view));
+      return true;
     }
   }
 }
