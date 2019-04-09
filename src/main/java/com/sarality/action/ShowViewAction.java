@@ -5,6 +5,9 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Action to show a View
  *
@@ -13,16 +16,21 @@ import android.view.animation.AnimationUtils;
 public class ShowViewAction implements ViewAction {
 
   private final Activity activity;
-  private final View view;
+  private final List<View> viewList = new ArrayList<>();
   private Animation startAnimation;
 
-  public ShowViewAction(Activity activity, int viewId) {
+  public ShowViewAction(Activity activity, int viewId, Integer... additionalViewIds) {
     this(activity, activity.findViewById(viewId));
+    if (additionalViewIds != null) {
+      for (Integer additionalViewId : additionalViewIds) {
+        viewList.add(activity.findViewById(additionalViewId));
+      }
+    }
   }
 
   public ShowViewAction(Activity activity, View view) {
     this.activity = activity;
-    this.view = view;
+    this.viewList.add(view);
   }
 
   public ShowViewAction withStartAnimation(int animationId) {
@@ -32,10 +40,12 @@ public class ShowViewAction implements ViewAction {
 
   @Override
   public boolean perform(ActionContext actionContext) {
-    if (startAnimation != null) {
-      view.startAnimation(startAnimation);
+    for (View view : viewList) {
+      if (startAnimation != null) {
+        view.startAnimation(startAnimation);
+      }
+      view.setVisibility(View.VISIBLE);
     }
-    view.setVisibility(View.VISIBLE);
     return true;
   }
 }
