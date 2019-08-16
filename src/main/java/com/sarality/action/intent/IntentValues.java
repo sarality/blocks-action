@@ -32,6 +32,13 @@ public class IntentValues {
     return null;
   }
 
+  public Double getDouble(String parameterName) {
+    if (extras != null && extras.containsKey(parameterName)) {
+      return extras.getDouble(parameterName);
+    }
+    return null;
+  }
+
   public String getString(String parameterName) {
     if (extras != null && extras.containsKey(parameterName)) {
       return extras.getString(parameterName);
