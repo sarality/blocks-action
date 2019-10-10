@@ -17,7 +17,7 @@ public class ConditionalAction implements ViewAction {
   @Override
   public boolean perform(ActionContext actionContext) {
     if (condition != null && condition.isTrue(actionContext.getView())) {
-      action.perform(actionContext);
+      return action.perform(actionContext);
     }
     return true;
   }

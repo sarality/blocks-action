@@ -7,6 +7,8 @@ import android.os.Bundle;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import hirondelle.date4j.DateTime;
+
 /**
  * Utility to extract data from an {@link Intent}.
  *
@@ -17,7 +19,10 @@ public class IntentValues {
   private final Bundle extras;
 
   public IntentValues(Activity activity) {
-    Intent intent = activity.getIntent();
+    this(activity.getIntent());
+  }
+
+  public IntentValues(Intent intent) {
     if (intent != null) {
       this.extras = intent.getExtras();
     } else {
@@ -30,6 +35,22 @@ public class IntentValues {
       return extras.getLong(parameterName);
     }
     return null;
+  }
+
+  public <E extends Enum<E>> E getEnum(String parameterName, Class<E> enumClass) {
+    String value = getString(parameterName);
+    if (value == null) {
+      return null;
+    }
+    return Enum.valueOf(enumClass, value);
+  }
+
+  public DateTime getDate(String parameterName) {
+    String value = getString(parameterName);
+    if (value == null) {
+      return null;
+    }
+    return new DateTime(value);
   }
 
   public Double getDouble(String parameterName) {
