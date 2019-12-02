@@ -20,6 +20,10 @@ public class StringValueAppender implements IntentAppender {
 
   @Override
   public void append(Intent intent, ActionContext actionContext) {
-    intent.putExtra(extraName, extractor.extract(actionContext.getView()));
+    if (actionContext == null) {
+      intent.putExtra(extraName, extractor.extract(null));
+    } else {
+      intent.putExtra(extraName, extractor.extract(actionContext.getView()));
+    }
   }
 }
