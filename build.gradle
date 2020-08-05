@@ -20,7 +20,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':blocks:log')
-    implementation 'org.slf4j:slf4j-api:1.7.29'
+    implementation 'org.slf4j:slf4j-android:1.7.29'
     implementation 'com.darwinsys:hirondelle-date4j:1.5.1'
     testImplementation 'junit:junit:4.12'
 }
