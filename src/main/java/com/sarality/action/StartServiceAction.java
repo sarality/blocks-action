@@ -3,6 +3,7 @@ package com.sarality.action;
 import android.app.Activity;
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Build;
 
 import com.sarality.action.intent.IntentAppender;
 
@@ -48,7 +49,11 @@ public class StartServiceAction implements ViewAction {
       intentAppender.append(intent, actionContext);
     }
 
-    activity.startService(intent);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      activity.startForegroundService(intent);
+    } else {
+      activity.startService(intent);
+    }
 
     return true;
   }
